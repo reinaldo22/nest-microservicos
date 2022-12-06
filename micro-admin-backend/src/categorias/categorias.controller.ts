@@ -1,16 +1,16 @@
 import { Controller, Logger } from '@nestjs/common';
-import { createGrpcMethodMetadata, Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
-import { AppService } from './app.service.service';
-import { Categoria } from './interfaceDocument/categoriaDocument';
+import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
+import { CategoriasService } from './categorias.service';
+import { Categoria } from './interfaces/categoria.interface';
+
 
 const ackErrors: string[] = ['E11000']
 
+@Controller('categorias')
+export class CategoriasController {
+  constructor(private appService: CategoriasService) { }
 
-@Controller()
-export class AppController {
-  constructor(private appService: AppService) { }
-
-  logger = new Logger(AppController.name);
+  logger = new Logger(CategoriasController.name);
 
   @EventPattern('criar-categoria')
   async categoriaCriada(@Payload() categoria: Categoria, @Ctx() context: RmqContext) {
@@ -71,5 +71,4 @@ export class AppController {
       }
     }
   }
-
 }
